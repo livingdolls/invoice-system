@@ -1,0 +1,70 @@
+### Create Customer
+POST http://localhost:3000/api/v1/customers
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "johndoe@gmail.com",
+    "phone": "123-456-7890",
+    "address": "123 Main St, Anytown, USA"
+}
+
+### Get Invoices
+GET http://localhost:3000/api/v1/invoices
+Content-Type: application/json
+
+### Create Invoice
+POST http://localhost:3000/api/v1/invoices
+Content-Type: application/json
+
+{
+  "invoice_number": "INV-002",
+  "issue_date": "2025-10-30T00:00:00Z",
+  "due_date": "2025-11-15T00:00:00Z",
+  "subject": "Website Development Services",
+  "customer_id": 1,
+  "tax": 10,
+  "items": [
+    {
+      "item_id": 1,
+      "quantity": 3,
+      "price": 2000000
+    },
+    {
+      "item_id": 2,
+      "quantity": 5,
+      "price": 3000000
+    }
+  ]
+}
+
+
+### Get Invoice Details
+GET http://localhost:3000/api/v1/invoices/1
+Content-Type: application/json
+
+### Update Invoice
+PUT http://localhost:3000/api/v1/invoices/6
+Content-Type: application/json
+
+{
+  "invoice_number": "INV-002-Updated",
+  "issue_date": "2025-10-30T00:00:00Z",
+  "due_date": "2025-11-30T00:00:00Z",
+  "subject": "Website Development Service Updated",
+  "customer_id": 1,
+  "status": "paid",
+  "tax": 10,
+  "items": [
+    {
+      "item_id": 1,
+      "quantity": 2,
+      "price": 500000
+    },
+    {
+      "item_id": 2,
+      "quantity": 1,
+      "price": 300000
+    }
+  ]
+}
