@@ -4,7 +4,7 @@ import Layout from "./components/Layout";
 import { Invoices, Items } from "./pages";
 import AddInvoices from "./pages/AddInvoices";
 import EditInvoices from "./pages/EditInvoices";
-import ViewInvoice from "./pages/invoices/ViewInvoice";
+import ViewInvoice from "./pages/ViewInvoice";
 
 // Create a client
 const queryClient = new QueryClient({

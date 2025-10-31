@@ -1,7 +1,9 @@
 import type { InvoiceItem } from "../../types/invoice";
 import type { TItem } from "../../types/item";
+import { useState } from "react";
 import { ModalItems } from "../items/ModalItems";
 import { useItems } from "../../hooks/useItems";
+import { Trash } from "lucide-react";
 
 interface InvoiceItemsManagerProps {
   invoiceItems: InvoiceItem[];
@@ -30,13 +32,18 @@ export default function InvoiceItemsManager({
     handleSearch,
   } = useItems();
 
+  // State to track modal mode
+  const [modalMode, setModalMode] = useState<"single" | "multiple">("single");
+
   // Handler untuk buka modal dengan mode single selection
   const handleOpenSingleSelection = () => {
+    setModalMode("single");
     handleOpen(true);
   };
 
   // Handler untuk buka modal dengan mode multiple selection
   const handleOpenMultipleSelection = () => {
+    setModalMode("multiple");
     handleOpen(true);
   };
 
@@ -113,13 +120,13 @@ export default function InvoiceItemsManager({
             </div>
 
             {/* Remove Button */}
-            <div className="flex justify-center">
+            <div className="flex justify-center w-[20px] items-center relative">
               <button
                 onClick={() => onRemoveItem(index)}
-                className="px-4 py-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md transition-colors"
+                className="px-4 py-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md transition-colors top-[8px]"
                 title="Remove item"
               >
-                Remove
+                <Trash />
               </button>
             </div>
           </div>
@@ -223,7 +230,7 @@ export default function InvoiceItemsManager({
         onClose={() => handleOpen(false)}
         onItemSelect={onItemSelect}
         onItemsSelect={onItemsSelect}
-        mode="single" // Will be dynamic based on which button was clicked
+        mode={modalMode}
         search={search}
         handleSearch={handleSearch}
       />

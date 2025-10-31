@@ -1,9 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEditInvoices } from "../../hooks/useEditInvoices";
-import InvoiceDetailsView from "../../components/invoices/InvoiceDetailsView";
-import CustomerSelectionView from "../../components/invoices/CustomerSelectionView";
-import InvoiceItemsView from "../../components/invoices/InvoiceItemsView";
-import InvoiceViewActions from "../../components/invoices/InvoiceViewActions";
+import { useEditInvoices } from "../hooks/useEditInvoices";
+import InvoiceDetailsView from "../components/invoices/InvoiceDetailsView";
+import CustomerSelectionView from "../components/invoices/CustomerSelectionView";
+import InvoiceItemsView from "../components/invoices/InvoiceItemsView";
+import InvoiceViewActions from "../components/invoices/InvoiceViewActions";
+import ListInvoiceItemsView from "../components/invoices/ListInvoiceItemsView";
 // import LoadingSpinner from '../../components/LoadingSpinner';
 
 export default function ViewInvoice() {
@@ -15,15 +16,6 @@ export default function ViewInvoice() {
     navigate("/invoices");
   };
 
-  const handleEdit = () => {
-    navigate(`/invoices/edit/${id}`);
-  };
-
-  const handleDownload = () => {
-    // TODO: Implement PDF download functionality
-    console.log("Download PDF for invoice:", id);
-  };
-
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -32,10 +24,12 @@ export default function ViewInvoice() {
     );
   }
 
+  console.log(invoice);
+
   if (isError) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="">
+        <div className="">
           <div className="bg-red-50 border border-red-200 rounded-lg p-6">
             <div className="flex">
               <div className="flex-shrink-0">
@@ -69,7 +63,7 @@ export default function ViewInvoice() {
   if (!invoice) {
     return (
       <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-4 sm:px-6 lg:px-8">
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
             <div className="flex">
               <div className="flex-shrink-0">
@@ -101,27 +95,23 @@ export default function ViewInvoice() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen ">
+      <div className="">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">View Invoice</h1>
-              <p className="mt-1 text-sm text-gray-600">
-                Invoice #{invoice.invoice_number}
-              </p>
             </div>
             <div className="flex items-center space-x-2">
               <span
-                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                className={`inline-flex items-center px-6 py-2 rounded-lg font-medium ${
                   invoice.status === "paid"
                     ? "bg-green-100 text-green-800"
-                    : invoice.status === "unpaid"
-                    ? "bg-red-100 text-red-800"
-                    : "bg-yellow-100 text-yellow-800"
+                    : "bg-red-100 text-red-800"
                 }`}
               >
+                Status {" : "}
                 {invoice.status.charAt(0).toUpperCase() +
                   invoice.status.slice(1)}
               </span>
@@ -130,51 +120,52 @@ export default function ViewInvoice() {
         </div>
 
         {/* Main Content */}
-        <div className="space-y-8">
-          {/* Invoice Details */}
-          <div className="bg-white shadow-sm rounded-lg overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-medium text-gray-900">
+        <div className="space-y-8 flex flex-row gap-6">
+          <div className="w-full">
+            {/* Invoice Details */}
+            <div className="">
+              <h2 className="text-lg font-medium text-gray-900 mb-4">
                 Invoice Details
               </h2>
-            </div>
-            <div className="p-6">
               <InvoiceDetailsView invoice={invoice} />
             </div>
-          </div>
 
-          {/* Customer Information */}
-          <div className="bg-white shadow-sm rounded-lg overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-medium text-gray-900">
+            {/* Customer Information */}
+            <div className="mt-20">
+              <h2 className="text-lg font-medium text-gray-900 mb-4">
                 Customer Information
               </h2>
-            </div>
-            <div className="p-6">
               <CustomerSelectionView customer={invoice.customer} />
             </div>
+
+            <hr className="my-10" />
+
+            <div className="mt-10 ">
+              <ListInvoiceItemsView items={invoice.items} />
+            </div>
           </div>
 
-          {/* Invoice Items */}
-          <div className="bg-white shadow-sm rounded-lg overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-medium text-gray-900">
-                Invoice Items
+          <div className="w-[400px] rounded-md shadow-lg bg-white self-baseline p-6">
+            {/* Invoice Items */}
+            <div className="bg-white shadow-sm rounded-lg overflow-hidden">
+              <h2 className="text-lg font-medium text-gray-900 mb-4">
+                Invoice Summary
               </h2>
-            </div>
-            <div className="p-6">
-              <InvoiceItemsView items={invoice.items} />
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div className="bg-white shadow-sm rounded-lg overflow-hidden">
-            <div className="p-6">
-              <InvoiceViewActions
-                onBack={handleBack}
-                onEdit={handleEdit}
-                onDownload={handleDownload}
+              <InvoiceItemsView
+                subtotal={invoice.subtotal}
+                total_items={invoice.items.length}
+                tax={invoice.tax}
+                amount={invoice.total_amount}
               />
+
+              <hr className="bg-gray-500 mt-6" />
+
+              <button
+                onClick={handleBack}
+                className="bg-white rounded border-red-500 border px-4 py-2 text-lg text-red-500 mt-4 w-full"
+              >
+                Back
+              </button>
             </div>
           </div>
         </div>

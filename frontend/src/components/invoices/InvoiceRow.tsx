@@ -17,7 +17,7 @@ export function InvoiceRow({ invoice, index }: InvoiceRowProps) {
   };
 
   return (
-    <tr className="hover:bg-gray-50">
+    <tr className=" my-4 bg-white">
       <td className="px-6 py-4 whitespace-nowrap">
         <div className="text-sm font-medium text-gray-900">{index + 1}</div>
       </td>

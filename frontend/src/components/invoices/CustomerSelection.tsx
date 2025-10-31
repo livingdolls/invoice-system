@@ -39,26 +39,19 @@ export default function CustomerSelection({
   const customStyles = {
     control: (provided: any) => ({
       ...provided,
-      border: "1px solid #d1d5db",
+      border: "none",
       borderRadius: "0.375rem",
       padding: "0.125rem",
       fontSize: "14px",
-      "&:hover": {
-        borderColor: "#9ca3af",
-      },
-      "&:focus": {
-        borderColor: "#3b82f6",
-        boxShadow: "0 0 0 1px #3b82f6",
-      },
     }),
     option: (provided: any, state: any) => ({
       ...provided,
       backgroundColor: state.isSelected
-        ? "#3b82f6"
+        ? "white"
         : state.isFocused
-        ? "#f3f4f6"
+        ? "white"
         : "white",
-      color: state.isSelected ? "white" : "#374151",
+      color: "black",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
@@ -109,7 +102,7 @@ export default function CustomerSelection({
 
   if (error) {
     return (
-      <div className="bg-white p-6 rounded-lg shadow-sm border">
+      <div className="">
         <h2 className="text-xl font-semibold mb-6 text-gray-800">
           Customer Information
         </h2>
@@ -121,7 +114,7 @@ export default function CustomerSelection({
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm border">
+    <div className="">
       <h2 className="text-xl font-semibold mb-6 text-gray-800">
         Customer Information
       </h2>
@@ -143,7 +136,7 @@ export default function CustomerSelection({
               styles={customStyles}
               placeholder="Select a customer..."
               noOptionsMessage={() => "No customers found"}
-              className="react-select-container"
+              className="react-select-container shadow-input border-0 rounded-lg outline-0 ring-0"
               classNamePrefix="react-select"
               formatOptionLabel={formatOptionLabel}
             />

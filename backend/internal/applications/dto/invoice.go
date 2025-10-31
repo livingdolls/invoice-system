@@ -69,7 +69,6 @@ type CreateInvoiceRequest struct {
 	Subject       string                     `json:"subject"`
 	CustomerID    uint                       `json:"customer_id" validate:"required"`
 	Subtotal      float64                    `json:"subtotal" validate:"required,gt=0"`
-	Tax           float64                    `json:"tax"`
 	TotalAmount   float64                    `json:"total_amount" validate:"required,gt=0"`
 	Status        string                     `json:"status" validate:"oneof=paid unpaid"`
 	Items         []CreateInvoiceItemRequest `json:"items" validate:"required,dive"`

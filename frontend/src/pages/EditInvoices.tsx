@@ -98,7 +98,7 @@ export default function EditInvoices() {
 
   if (isError) {
     return (
-      <div className="max-w-6xl mx-auto p-6 bg-gray-50 min-h-screen">
+      <div className="min-h-screen">
         <div className="bg-red-50 border border-red-200 rounded-md p-4">
           <h3 className="text-red-800 font-medium">Error</h3>
           <p className="text-red-700">
@@ -116,7 +116,7 @@ export default function EditInvoices() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-gray-50 min-h-screen">
+    <div className="min-h-screen">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Edit Invoice</h1>
         <p className="text-gray-600">

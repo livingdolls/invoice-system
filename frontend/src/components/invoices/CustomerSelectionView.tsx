@@ -19,28 +19,8 @@ export default function CustomerSelectionView({
         </div>
       </div>
 
-      {/* Email */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Email
-        </label>
-        <div className="bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-gray-900">
-          {customer.email || "-"}
-        </div>
-      </div>
-
-      {/* Phone */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Phone
-        </label>
-        <div className="bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-gray-900">
-          {customer.phone || "-"}
-        </div>
-      </div>
-
       {/* Address */}
-      <div className="md:col-span-2">
+      <div className="">
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Address
         </label>

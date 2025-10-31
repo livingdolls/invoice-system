@@ -1,3 +1,4 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { TPagination } from "../../types/invoice";
 
 type InvoicesPaginationProps = {
@@ -46,24 +47,6 @@ export default function InvoicesPagination({
 
       {/* Controls */}
       <div className="flex items-center gap-3">
-        {/* Page size */}
-        {onPageSizeChange && (
-          <div className="flex items-center gap-2">
-            <label className="text-sm text-gray-600">Rows per page:</label>
-            <select
-              value={pageSize}
-              onChange={(e) => onPageSizeChange(Number(e.target.value))}
-              className="border rounded-md px-2 py-1 text-sm"
-            >
-              {[10, 20, 50].map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-
         {/* Pager */}
         <nav
           className="inline-flex -space-x-px rounded-md shadow-sm"
@@ -73,23 +56,23 @@ export default function InvoicesPagination({
             type="button"
             disabled={!canPrev}
             onClick={() => canPrev && onPageChange?.(current_page - 1)}
-            className={`relative inline-flex items-center px-2 py-2 text-sm font-medium border rounded-l-md ${
+            className={`relative inline-flex items-center px-2 py-2 text-sm font-medium rounded-md ${
               canPrev
-                ? "bg-white text-gray-700 hover:bg-gray-50 border-gray-300"
-                : "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
+                ? "bg-accent-200 text-white"
+                : "text-gray-400 border-gray-200 cursor-not-allowed"
             }`}
           >
-            Prev
+            <ChevronLeft size={18} />
           </button>
           {pages.map((p) => (
             <button
               key={p}
               type="button"
               onClick={() => onPageChange?.(p)}
-              className={`relative inline-flex items-center px-4 py-2 text-sm font-medium border ${
+              className={`relative inline-flex items-center px-4 py-2 text-sm font-medium  ${
                 p === current_page
-                  ? "z-10 bg-blue-50 border-blue-500 text-blue-600"
-                  : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
+                  ? "z-10 bg-accent-200 bg-opacity-20 text-accent-200"
+                  : "text-accent-200"
               }`}
             >
               {p}
@@ -99,13 +82,13 @@ export default function InvoicesPagination({
             type="button"
             disabled={!canNext}
             onClick={() => canNext && onPageChange?.(current_page + 1)}
-            className={`relative inline-flex items-center px-2 py-2 text-sm font-medium border rounded-r-md ${
+            className={`relative inline-flex items-center px-2 py-2 text-sm font-medium border rounded-md ${
               canNext
-                ? "bg-white text-gray-700 hover:bg-gray-50 border-gray-300"
-                : "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
+                ? "bg-accent-200 text-white"
+                : "bg-gray-100 text-gray-400  cursor-not-allowed"
             }`}
           >
-            Next
+            <ChevronRight size={18} />
           </button>
         </nav>
       </div>

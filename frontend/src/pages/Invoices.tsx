@@ -25,24 +25,19 @@ export default function Invoices() {
 
   return (
     <div className="space-y-6">
-      {/* Filter Controls */}
-      <Card>
-        <FilterControls filters={filters} onResetFilters={resetFilters} />
-      </Card>
+      <FilterControls />
 
       {/* Invoices Table */}
-      <Card>
-        {!invoices ? (
-          <EmptyState />
-        ) : (
-          <InvoiceTable
-            invoices={invoices}
-            filters={filters}
-            onFiltersChange={updateFilters}
-            pagination={data?.pagination}
-          />
-        )}
-      </Card>
+      {!invoices ? (
+        <EmptyState />
+      ) : (
+        <InvoiceTable
+          invoices={invoices}
+          filters={filters}
+          onFiltersChange={updateFilters}
+          pagination={data?.pagination}
+        />
+      )}
     </div>
   );
 }

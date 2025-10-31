@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"invoice-system/internal/applications/dto"
 	"invoice-system/internal/applications/mapper"
 	"invoice-system/internal/applications/ports/repository"
@@ -53,12 +54,17 @@ func (i *InvoiceService) CreateInvoice(req dto.CreateInvoiceRequest) error {
 		Subject:       req.Subject,
 		CustomerID:    req.CustomerID,
 		Subtotal:      subtotal,
-		Tax:           req.Tax,
-		TotalAmount:   subtotal + (subtotal * req.Tax / 100),
+		Tax:           subtotal * (10.0 / 100.0),
+		TotalAmount:   subtotal + (subtotal * (10.0 / 100.0)),
 		Status:        req.Status,
 		TotalItems:    len(items),
 		Items:         items,
 	}
+
+	fmt.Print("jalan")
+	fmt.Print(invoice.Tax)
+	fmt.Print(invoice.Subtotal)
+	fmt.Print(invoice.TotalAmount)
 
 	err := i.repo.CreateInvoice(invoice)
 	if err != nil {

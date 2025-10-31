@@ -23,9 +23,9 @@ export function InvoiceTable({
 }: InvoiceTableProps) {
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
+      <table className="min-w-full border-separate border-spacing-y-2">
         <TableHeader />
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="">
           <FilterRow filters={filters} onFiltersChange={onFiltersChange} />
           {invoices.map((invoice, index) => (
             <InvoiceRow key={invoice.id} invoice={invoice} index={index} />

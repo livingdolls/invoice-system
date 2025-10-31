@@ -8,7 +8,7 @@ const initialFilters: TRequestInvoice = {
   customer_name: "",
   due_date: "",
   status: null,
-  limit: 10,
+  limit: 8,
   page: 1,
 };
 
