@@ -11,6 +11,7 @@ type GetInvoiceFilterRequest struct {
 	Status       string     `form:"status"`
 	Cursor       *time.Time `form:"cursor"`
 	Limit        int        `form:"limit"`
+	Page         int        `form:"page"`
 }
 
 type InvoiceResponse struct {
@@ -19,6 +20,7 @@ type InvoiceResponse struct {
 	IssueDate     time.Time `json:"issue_date"`
 	DueDate       time.Time `json:"due_date"`
 	Subject       string    `json:"subject"`
+	TotalItems    int       `json:"total_items"`
 	CustomerName  string    `json:"customer_name"`
 	TotalAmount   float64   `json:"total_amount"`
 	Status        string    `json:"status"`
@@ -26,7 +28,16 @@ type InvoiceResponse struct {
 
 type InvoiceListResponse struct {
 	Invoices   []InvoiceResponse `json:"invoices"`
-	NextCursor *time.Time        `json:"next_cursor,omitempty"`
+	Pagination Pagination        `json:"pagination"`
+}
+
+type Pagination struct {
+	TotalItems  int64 `json:"total_items"`
+	TotalPages  int   `json:"total_pages"`
+	CurrentPage int   `json:"current_page"`
+	PrevPage    *int  `json:"prev_page,omitempty"`
+	NextPage    *int  `json:"next_page,omitempty"`
+	Limit       int   `json:"limit"`
 }
 
 type InvoiceDetailResponse struct {

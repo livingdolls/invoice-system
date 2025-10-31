@@ -57,6 +57,12 @@ func (h *InvoiceHandler) ListInvoices(c *gin.Context) {
 		}
 	}
 
+	if pageStr := c.Query("page"); pageStr != "" {
+		if page, err := strconv.Atoi(pageStr); err == nil {
+			req.Page = page
+		}
+	}
+
 	resp, err := h.service.GetAllInvoices(req)
 
 	if err != nil {

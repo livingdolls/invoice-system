@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(r *gin.Engine, customerHandler *handler.CustomerHandler, invoiceHandler *handler.InvoiceHandler) {
+func SetupRoutes(r *gin.Engine, customerHandler *handler.CustomerHandler, invoiceHandler *handler.InvoiceHandler, itemHandler *handler.ItemHandler) {
 	api := r.Group("/api/v1")
 
 	// Health check endpoint
@@ -32,5 +32,10 @@ func SetupRoutes(r *gin.Engine, customerHandler *handler.CustomerHandler, invoic
 		invoices.POST("", invoiceHandler.CreateInvoice)
 		invoices.GET("/:invoice_id", invoiceHandler.GetInvoiceDetails)
 		invoices.PUT("/:invoice_id", invoiceHandler.UpdateInvoice)
+	}
+
+	items := api.Group("/items")
+	{
+		items.GET("", itemHandler.GetItems)
 	}
 }

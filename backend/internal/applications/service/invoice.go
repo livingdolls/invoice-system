@@ -20,13 +20,13 @@ func NewInvoiceService(repo repository.InvoiceRepository) services.InvoiceServic
 func (i *InvoiceService) GetAllInvoices(filters dto.GetInvoiceFilterRequest) (dto.InvoiceListResponse, error) {
 	filter := mapper.ToDomainInvoiceFilter(filters)
 
-	invoice, next, err := i.repo.GetAllInvoices(filter)
+	invoice, pagination, err := i.repo.GetAllInvoices(filter)
 
 	if err != nil {
 		return dto.InvoiceListResponse{}, err
 	}
 
-	return mapper.ToInvoiceListResponse(invoice, next), nil
+	return mapper.ToInvoiceListResponse(invoice, pagination), nil
 }
 
 // CreateInvoice implements services.InvoiceService.

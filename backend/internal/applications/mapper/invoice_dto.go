@@ -17,6 +17,7 @@ func ToDomainInvoiceFilter(req dto.GetInvoiceFilterRequest) domain.InvoiceFilter
 		Status:       req.Status,
 		Cursor:       req.Cursor,
 		Limit:        req.Limit,
+		Page:         req.Page,
 	}
 }
 
@@ -31,10 +32,11 @@ func ToInvoiceResponse(d domain.Invoice) dto.InvoiceResponse {
 		ID:            d.ID,
 		InvoiceNumber: d.InvoiceNumber,
 		IssueDate:     d.IssueDate,
-		DueDate:       d.DueDate,
 		Subject:       d.Subject,
+		TotalItems:    d.TotalItems,
 		CustomerName:  customerName,
 		TotalAmount:   d.TotalAmount,
+		DueDate:       d.DueDate,
 		Status:        d.Status,
 	}
 }
@@ -82,13 +84,20 @@ func ToInvoiceDetailResponse(d domain.Invoice) dto.InvoiceDetailResponse {
 	}
 }
 
-func ToInvoiceListResponse(invoices []domain.Invoice, nextCursor *time.Time) dto.InvoiceListResponse {
+func ToInvoiceListResponse(invoices []domain.Invoice, pagination domain.Pagination) dto.InvoiceListResponse {
 	resp := make([]dto.InvoiceResponse, len(invoices))
 	for i, inv := range invoices {
 		resp[i] = ToInvoiceResponse(inv)
 	}
 	return dto.InvoiceListResponse{
-		Invoices:   resp,
-		NextCursor: nextCursor,
+		Invoices: resp,
+		Pagination: dto.Pagination{
+			TotalItems:  pagination.TotalItems,
+			TotalPages:  pagination.TotalPages,
+			CurrentPage: pagination.CurrentPage,
+			PrevPage:    pagination.PrevPage,
+			NextPage:    pagination.NextPage,
+			Limit:       pagination.Limit,
+		},
 	}
 }

@@ -51,8 +51,12 @@ func InitServer(cf *config.AppConfig, db *gorm.DB) *AppServer {
 	invoiceService := service.NewInvoiceService(invoiceRepo)
 	invoiceHandler := handler.NewInvoiceHandler(invoiceService)
 
+	itemRepo := repository.NewItemRepository(db)
+	itemService := service.NewItemService(itemRepo)
+	itemHandler := handler.NewItemHandler(itemService)
+
 	// Setup router
-	router.SetupRoutes(engine, customerHandler, invoiceHandler)
+	router.SetupRoutes(engine, customerHandler, invoiceHandler, itemHandler)
 
 	return &AppServer{
 		DB:     db,

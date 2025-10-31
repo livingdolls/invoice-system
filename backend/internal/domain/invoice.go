@@ -21,6 +21,15 @@ type Invoice struct {
 	Items    []InvoiceItem
 }
 
+type Pagination struct {
+	TotalItems  int64
+	TotalPages  int
+	CurrentPage int
+	PrevPage    *int
+	NextPage    *int
+	Limit       int
+}
+
 type InvoiceItem struct {
 	ID         uint
 	InvoiceID  uint
@@ -45,5 +54,6 @@ type InvoiceFilter struct {
 	Status       string
 
 	Limit  int
+	Page   int
 	Cursor *time.Time
 }

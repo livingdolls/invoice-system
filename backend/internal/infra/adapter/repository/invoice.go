@@ -7,6 +7,7 @@ import (
 	"invoice-system/internal/domain"
 	"invoice-system/internal/infra/db/mapper"
 	"invoice-system/internal/infra/db/models"
+	"math"
 	"time"
 
 	"gorm.io/gorm"
@@ -21,77 +22,107 @@ func NewInvoiceRepository(db *gorm.DB) repository.InvoiceRepository {
 }
 
 // GetAllInvoices implements repository.InvoiceRepository.
-func (i *invoiceRepository) GetAllInvoices(filters domain.InvoiceFilter) ([]domain.Invoice, *time.Time, error) {
-	db := i.db.Model(&models.Invoice{}).Preload("Customer").Preload("Items")
+func (i *invoiceRepository) GetAllInvoices(filters domain.InvoiceFilter) ([]domain.Invoice, domain.Pagination, error) {
+	// helper to apply all filters consistently
+	applyFilters := func(db *gorm.DB) *gorm.DB {
+		// filter invoice id
+		if filters.InvoiceID != nil && *filters.InvoiceID != "" {
+			db = db.Where("invoice_number LIKE ?", "%"+*filters.InvoiceID+"%")
+		}
 
-	// filter invoice id
-	if filters.InvoiceID != nil && *filters.InvoiceID != "" {
-		db = db.Where("invoice_number = ?", *filters.InvoiceID)
+		// filter issue date
+		if filters.IssueDate != nil {
+			date := filters.IssueDate.Format("2006-01-02")
+			db = db.Where("DATE(issue_date) = ?", date)
+		}
+
+		// filter subject
+		if filters.Subject != nil && *filters.Subject != "" {
+			db = db.Where("subject LIKE ?", "%"+*filters.Subject+"%")
+		}
+
+		// filter customer name
+		if filters.CustomerName != "" {
+			db = db.Joins("JOIN customers ON customers.id = invoices.customer_id").
+				Where("customers.name LIKE ?", "%"+filters.CustomerName+"%")
+		}
+
+		// filter due date
+		if filters.DueDate != nil {
+			date := filters.DueDate.Format("2006-01-02")
+			db = db.Where("DATE(due_date) = ?", date)
+		}
+
+		// filter status
+		if filters.Status != "" {
+			db = db.Where("status = ?", filters.Status)
+		}
+
+		return db
 	}
 
-	// filter issue date
-	if filters.IssueDate != nil {
-		date := filters.IssueDate.Format("2006-01-02")
-		db = db.Where("issue_date = ?", date)
-	}
-
-	// filter subject
-	if filters.Subject != nil && *filters.Subject != "" {
-		db = db.Where("subject LIKE ?", "%"+*filters.Subject+"%")
-	}
-
-	// filter customer name
-	if filters.CustomerName != "" {
-		db = db.Joins("JOIN customers ON customers.id = invoices.customer_id").
-			Where("customers.name LIKE ?", "%"+filters.CustomerName+"%")
-	}
-
-	// filter due date
-	if filters.DueDate != nil {
-		date := filters.DueDate.Format("2006-01-02")
-		db = db.Where("due_date = ?", date)
-	}
-
-	// filter status
-	if filters.Status != "" {
-		db = db.Where("status = ?", filters.Status)
-	}
-
-	// pagination
+	// pagination params
 	limit := filters.Limit
 	if limit <= 0 {
 		limit = 10
 	}
+	page := filters.Page
+	if page <= 0 {
+		page = 1
+	}
+	offset := (page - 1) * limit
 
-	if filters.Cursor != nil && !filters.Cursor.IsZero() {
-		db = db.Where("invoices.created_at < ?", *filters.Cursor)
+	// COUNT total items with filters
+	var totalItems int64
+	countDB := applyFilters(i.db.Model(&models.Invoice{}))
+	if err := countDB.Count(&totalItems).Error; err != nil {
+		return nil, domain.Pagination{}, fmt.Errorf("failed to count invoices: %w", err)
 	}
 
-	db = db.Order("invoices.created_at DESC").Limit(limit + 1)
+	// Fetch data with preloads and ordering
+	dataDB := applyFilters(i.db.Model(&models.Invoice{})).
+		Preload("Customer").
+		Preload("Items.Item").
+		Order("invoices.created_at DESC").
+		Limit(limit).
+		Offset(offset)
 
 	var invoices []models.Invoice
-
-	if err := db.Find(&invoices).Error; err != nil {
+	if err := dataDB.Find(&invoices).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return []domain.Invoice{}, nil, nil
+			return []domain.Invoice{}, domain.Pagination{TotalItems: 0, TotalPages: 0, CurrentPage: page, Limit: limit}, nil
 		}
-		return nil, nil, err
+		return nil, domain.Pagination{}, err
 	}
 
-	// next cursor
-	var nextCursor *time.Time
-	if len(invoices) > limit {
-		next := invoices[len(invoices)-1].CreatedAt
-		nextCursor = &next
-		invoices = invoices[:limit]
+	// compute pagination metadata
+	totalPages := int(math.Ceil(float64(totalItems) / float64(limit)))
+	var prevPage *int
+	var nextPage *int
+	if page > 1 {
+		p := page - 1
+		prevPage = &p
+	}
+	if page < totalPages {
+		n := page + 1
+		nextPage = &n
+	}
+	pagination := domain.Pagination{
+		TotalItems:  totalItems,
+		TotalPages:  totalPages,
+		CurrentPage: page,
+		PrevPage:    prevPage,
+		NextPage:    nextPage,
+		Limit:       limit,
 	}
 
+	// map models to domain
 	result := make([]domain.Invoice, 0, len(invoices))
 	for _, inv := range invoices {
 		result = append(result, mapper.ToDomainInvoice(inv))
 	}
 
-	return result, nextCursor, nil
+	return result, pagination, nil
 }
 
 func (i *invoiceRepository) CreateInvoice(invoice domain.Invoice) error {
