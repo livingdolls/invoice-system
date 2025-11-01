@@ -3,7 +3,9 @@ import type { TItem } from "../../types/item";
 import { useState } from "react";
 import { ModalItems } from "../items/ModalItems";
 import { useItems } from "../../hooks/useItems";
-import { Trash } from "lucide-react";
+import { ChevronDown, CirclePlus, Trash } from "lucide-react";
+import { CurrencyInput } from "../ui/CurrencyInput";
+import { formatCurrency } from "../../utils/currency";
 
 interface InvoiceItemsManagerProps {
   invoiceItems: InvoiceItem[];
@@ -24,8 +26,6 @@ export default function InvoiceItemsManager({
 }: InvoiceItemsManagerProps) {
   const {
     data: items,
-    isLoading: itemsLoading,
-    isError: itemsError,
     open,
     handleOpen,
     search,
@@ -58,21 +58,23 @@ export default function InvoiceItemsManager({
         {invoiceItems.map((invoiceItem, index) => (
           <div
             key={`${invoiceItem.item.id}-${index}`}
-            className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center"
+            className="flex flex-row gap-4 items-center"
           >
             {/* Item Info */}
-            <div className="md:col-span-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Item
+            <div className="">
+              <label className="text-xs mb-2 block">
+                Items
               </label>
-              <div className="p-3 bg-gray-50 rounded-md border">
+              <div className="h-[46px] shadow-input rounded-lg flex items-center w-[297px] bg-white relative px-4 text-sm font-medium">
                 {invoiceItem.item.name}
+
+                <ChevronDown size={18} className="absolute right-4 inset-y-0 my-auto" />
               </div>
             </div>
 
             {/* Quantity */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="text-xs mb-2 block">
                 Qty
               </label>
               <input
@@ -82,39 +84,35 @@ export default function InvoiceItemsManager({
                 onChange={(e) =>
                   onQuantityChange(index, parseInt(e.target.value) || 1)
                 }
-                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="h-[46px] w-[84px] rounded-lg px-4 text-right font-medium text-sm"
                 placeholder="0"
               />
             </div>
 
             {/* Price */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Price
+              <label className="text-xs mb-2 block">
+                Unit Price
               </label>
-              <input
-                type="number"
-                step="0.01"
-                min="0"
+              <CurrencyInput
                 value={invoiceItem.price}
-                onChange={(e) =>
-                  onPriceChange(index, parseFloat(e.target.value) || 0)
-                }
-                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                onChange={(value) => onPriceChange(index, value)}
+                className="w-[189px] h-[46px] rounded-lg px-4 font-medium text-sm text-right"
                 placeholder="0"
+                prefix=""
               />
             </div>
 
             {/* Amount */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="text-xs mb-2 block">
                 Amount
               </label>
               <input
-                type="number"
-                value={invoiceItem.amount.toFixed(2)}
+                type="text"
+                value={formatCurrency(invoiceItem.amount)}
                 disabled
-                className="w-full p-3 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+                className="w-[189px] h-[46px] rounded-lg px-4 font-medium text-sm text-right bg-input-600"
                 placeholder="0"
               />
             </div>
@@ -123,7 +121,7 @@ export default function InvoiceItemsManager({
             <div className="flex justify-center w-[20px] items-center relative">
               <button
                 onClick={() => onRemoveItem(index)}
-                className="px-4 py-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md transition-colors top-[8px]"
+                className="px-4 py-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md transition-colors top-[10px] relative"
                 title="Remove item"
               >
                 <Trash />
@@ -133,58 +131,57 @@ export default function InvoiceItemsManager({
         ))}
 
         {/* Add Item Button Row - untuk single selection */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+        <div className="flex flex-row gap-4 items-center">
           {/* Item Info */}
           <div className="md:col-span-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="text-xs mb-2 block">
               Item
             </label>
             <button
               onClick={handleOpenSingleSelection}
-              className="w-full p-3 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-left text-gray-500"
+              className="h-[46px] shadow-input rounded-lg flex items-center w-[297px] bg-white relative px-4 text-sm font-medium"
             >
               Select your items
+              <ChevronDown size={18} className="absolute right-4 inset-y-0 my-auto" />
             </button>
           </div>
 
           {/* Quantity */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="text-xs mb-2 block">
               Qty
             </label>
             <input
               type="number"
               min="1"
               disabled
-              className="w-full p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-400"
+              className="h-[46px] w-[84px] rounded-lg px-4 text-right font-medium text-sm"
               placeholder="0"
             />
           </div>
 
           {/* Price */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="text-xs mb-2 block">
               Price
             </label>
             <input
-              type="number"
-              step="0.01"
-              min="0"
+              type="text"
               disabled
-              className="w-full p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-400"
+              className="w-[189px] h-[46px] rounded-lg px-4 font-medium text-sm text-right"
               placeholder="0"
             />
           </div>
 
           {/* Amount */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="text-xs mb-2 block">
               Amount
             </label>
             <input
-              type="number"
+              type="text"
               disabled
-              className="w-full p-3 border border-gray-300 rounded-md bg-gray-100 text-gray-400"
+              className="w-[189px] h-[46px] rounded-lg px-4 font-medium text-sm text-right bg-input-600"
               placeholder="0"
             />
           </div>
@@ -199,29 +196,13 @@ export default function InvoiceItemsManager({
         <div className="">
           <button
             onClick={handleOpenMultipleSelection}
-            className="py-3 px-4 bg-white  rounded-md focus:outline-none border border-purple-500  transition-colors"
+            className="border-accent-200 border text-accent-200 py-3 px-[20px] bg-white rounded-lg flex flex-row gap-2"
           >
-            + Add Multiple Items
+            <CirclePlus size={24} className="color-accent-200" />
+            Add Item
           </button>
         </div>
       </div>
-
-      {/* Total Summary */}
-      {invoiceItems.length > 0 && (
-        <div className="mt-6 bg-gray-50 p-6 rounded-lg border">
-          <div className="flex justify-between items-center">
-            <span className="text-lg font-medium text-gray-900">
-              Total Amount:
-            </span>
-            <span className="text-lg font-semibold text-gray-900">
-              $
-              {invoiceItems
-                .reduce((total, item) => total + item.amount, 0)
-                .toFixed(2)}
-            </span>
-          </div>
-        </div>
-      )}
 
       {/* Items Modal */}
       <ModalItems

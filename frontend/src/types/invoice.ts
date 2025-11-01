@@ -37,6 +37,7 @@ export type TRequestInvoice = {
   invoice_id?: string;
   issue_date?: string;
   subject?: string;
+  total_items?: number;
   customer_name: string;
   due_date?: string;
   status?: InvoiceStatus | null;
@@ -46,7 +47,6 @@ export type TRequestInvoice = {
 };
 
 export type TCreateInvoice = {
-  invoice_number: string;
   issue_date: string;
   due_date: string;
   subject: string;

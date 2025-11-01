@@ -2,12 +2,14 @@ import { ArrowDownToLine, Eye, Pencil } from "lucide-react";
 import { type TInvoice } from "../../types/invoice";
 import { Link } from "react-router-dom";
 
-interface InvoiceRowProps {
+type InvoiceRowProps = {
   invoice: TInvoice;
   index: number;
+  downloadInvoice: (invoiceId: string) => void;
+  rowNumber?: number; // Optional prop for custom row numbering
 }
 
-export function InvoiceRow({ invoice, index }: InvoiceRowProps) {
+export function InvoiceRow({ invoice, index, downloadInvoice, rowNumber }: InvoiceRowProps) {
   const getStatusColor = (status: string) => {
     return status === "paid" ? "text-green-600" : "text-red-500";
   };
@@ -16,10 +18,12 @@ export function InvoiceRow({ invoice, index }: InvoiceRowProps) {
     return new Date(dateString).toLocaleDateString();
   };
 
+  const displayNumber = rowNumber !== undefined ? rowNumber : index + 1;
+
   return (
     <tr className=" my-4 bg-white">
       <td className="px-6 py-4 whitespace-nowrap">
-        <div className="text-sm font-medium text-gray-900">{index + 1}</div>
+        <div className="text-sm font-medium text-gray-900">{displayNumber}</div>
       </td>
 
       <td className="px-6 py-4 whitespace-nowrap">
@@ -63,6 +67,7 @@ export function InvoiceRow({ invoice, index }: InvoiceRowProps) {
       <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
         <div className="flex flex-row gap-2 justify-center">
           <button
+            onClick={() => downloadInvoice(invoice.id.toString())}
             title="Download Invoice"
             className="text-green-500 hover:text-green-700 transition-colors"
           >

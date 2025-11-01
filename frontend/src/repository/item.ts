@@ -10,3 +10,9 @@ export const ItemsRepository = async (nameOrType: string) => {
   const res = await apiClient.get<TItem[]>(`/items?${params.toString()}`);
   return res.data;
 };
+
+
+export const CreateItemRepository = async (itemData: Pick<TItem, "name" | "type">) => {
+  const res = await apiClient.post<TItem>("/items", itemData);
+  return res.data;
+}

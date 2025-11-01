@@ -13,6 +13,7 @@ export const InvoicesRepository = async (req: TRequestInvoice) => {
   if (req.issue_date)
     params.append("issue_date", new Date(req.issue_date).toISOString());
   if (req.subject) params.append("subject", req.subject);
+  if (req.total_items) params.append("total_items", req.total_items.toString());
   if (req.customer_name) params.append("customer_name", req.customer_name);
   if (req.due_date)
     params.append("due_date", new Date(req.due_date).toISOString());

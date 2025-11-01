@@ -37,5 +37,6 @@ func SetupRoutes(r *gin.Engine, customerHandler *handler.CustomerHandler, invoic
 	items := api.Group("/items")
 	{
 		items.GET("", itemHandler.GetItems)
+		items.POST("", itemHandler.CreateItem)
 	}
 }

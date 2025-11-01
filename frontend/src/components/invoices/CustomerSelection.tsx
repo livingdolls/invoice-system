@@ -43,11 +43,13 @@ export default function CustomerSelection({
       borderRadius: "0.375rem",
       padding: "0.125rem",
       fontSize: "14px",
+      height:"46px",
+      fontWeight:"500",
     }),
     option: (provided: any, state: any) => ({
       ...provided,
       backgroundColor: state.isSelected
-        ? "white"
+        ? "#EEE8FA"
         : state.isFocused
         ? "white"
         : "white",
@@ -56,7 +58,7 @@ export default function CustomerSelection({
       alignItems: "center",
       justifyContent: "space-between",
       "&:hover": {
-        backgroundColor: state.isSelected ? "#3b82f6" : "#f3f4f6",
+        backgroundColor: state.isSelected ? "#EEE8FA" : "#f3f4f6",
       },
     }),
   };
@@ -92,7 +94,11 @@ export default function CustomerSelection({
           }}
         >
           <span>{option.label}</span>
-          {isSelected && <Check size={16} className="text-blue-600" />}
+          {isSelected && 
+          <div className="p-1 bg-accent-200 rounded">
+            <Check size={16} strokeWidth={2} className="text-white" />
+          </div>
+          }
         </div>
       );
     }
@@ -103,7 +109,7 @@ export default function CustomerSelection({
   if (error) {
     return (
       <div className="">
-        <h2 className="text-xl font-semibold mb-6 text-gray-800">
+        <h2 className="text-xl font-semibold mb-6">
           Customer Information
         </h2>
         <div className="w-full p-3 border border-red-300 rounded-md bg-red-50">
@@ -115,14 +121,14 @@ export default function CustomerSelection({
 
   return (
     <div className="">
-      <h2 className="text-xl font-semibold mb-6 text-gray-800">
+      <h2 className="text-xl font-semibold mb-[14px]">
         Customer Information
       </h2>
 
-      <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-x-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Customer *
+            Customer
           </label>
           {isLoading ? (
             <div className="w-full p-3 border border-gray-300 rounded-md bg-gray-50">
@@ -136,7 +142,7 @@ export default function CustomerSelection({
               styles={customStyles}
               placeholder="Select a customer..."
               noOptionsMessage={() => "No customers found"}
-              className="react-select-container shadow-input border-0 rounded-lg outline-0 ring-0"
+              className="react-select-container shadow-input border-0 rounded-lg outline-0 ring-0 w-[400px]"
               classNamePrefix="react-select"
               formatOptionLabel={formatOptionLabel}
             />
@@ -150,7 +156,7 @@ export default function CustomerSelection({
           <textarea
             rows={4}
             disabled
-            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full p-4 bg-input-600 font-medium text-sm rounded-lg"
             value={address}
           />
         </div>

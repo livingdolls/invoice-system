@@ -20,10 +20,16 @@ func NewItemRepository(db *gorm.DB) repository.ItemRepository {
 }
 
 // GetAllItems implements repository.ItemRepository.
-func (i *itemRepository) GetAllItems(NameOrType string) ([]domain.Item, error) {
+func (i *itemRepository) GetAllItems(NameOrType string, limit uint) ([]domain.Item, error) {
 	var models []models.Item
 
 	db := i.db
+
+	if limit <= 0 {
+		limit = 10
+	}
+
+	db = db.Limit(int(limit))
 
 	if NameOrType != "" {
 		db = db.Where("name LIKE ? OR type LIKE ?", "%"+NameOrType+"%", "%"+NameOrType+"%")
@@ -40,4 +46,10 @@ func (i *itemRepository) GetAllItems(NameOrType string) ([]domain.Item, error) {
 	}
 
 	return items, nil
+}
+
+func (i *itemRepository) AddItem(item domain.Item) error {
+	model := mapper.ToModelItem(item)
+
+	return i.db.Create(&model).Error
 }

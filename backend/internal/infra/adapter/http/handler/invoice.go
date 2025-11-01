@@ -4,6 +4,7 @@ import (
 	"invoice-system/internal/applications/dto"
 	"invoice-system/internal/applications/ports/services"
 	"invoice-system/internal/infra/adapter/http/response"
+	"invoice-system/internal/utils"
 	"strconv"
 	"time"
 
@@ -33,6 +34,12 @@ func (h *InvoiceHandler) ListInvoices(c *gin.Context) {
 
 	if subject := c.Query("subject"); subject != "" {
 		req.Subject = &subject
+	}
+
+	if totalItems := c.Query("total_items"); totalItems != "" {
+		if items, err := strconv.Atoi(totalItems); err == nil {
+			req.TotalItems = &items
+		}
 	}
 
 	req.CustomerName = c.Query("customer_name")
@@ -100,6 +107,10 @@ func (h *InvoiceHandler) GetInvoiceDetails(c *gin.Context) {
 
 	resp, err := h.service.GetInvoiceByID(uint(invId))
 	if err != nil {
+		if err == utils.ErrInvoiceNotFound {
+			response.NotFoundResponse(c, "invoice not found")
+			return
+		}
 		response.InternalServerErrorResponse(c, err)
 		return
 	}

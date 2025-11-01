@@ -89,3 +89,8 @@ func OKResponse(c *gin.Context, message string, data interface{}) {
 func NoContentResponse(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
+
+// ConflictResponse sends conflict error response
+func ConflictResponse(c *gin.Context, message string, data interface{}) {
+	ErrorResponse(c, http.StatusConflict, "CONFLICT", message)
+}

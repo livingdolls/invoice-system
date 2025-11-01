@@ -18,12 +18,10 @@ POST http://localhost:3000/api/v1/invoices
 Content-Type: application/json
 
 {
-  "invoice_number": "INV-002",
   "issue_date": "2025-10-30T00:00:00Z",
   "due_date": "2025-11-15T00:00:00Z",
-  "subject": "Website Development Services",
+  "subject": "Hai",
   "customer_id": 1,
-  "tax": 10,
   "items": [
     {
       "item_id": 1,
@@ -48,7 +46,6 @@ PUT http://localhost:3000/api/v1/invoices/6
 Content-Type: application/json
 
 {
-  "invoice_number": "INV-002-Updated",
   "issue_date": "2025-10-30T00:00:00Z",
   "due_date": "2025-11-30T00:00:00Z",
   "subject": "Website Development Service Updated",
@@ -67,4 +64,13 @@ Content-Type: application/json
       "price": 300000
     }
   ]
+}
+
+### Add item
+POST http://localhost:3000/api/v1/items
+Content-Type: application/json
+
+{
+  "name": "New Item",
+  "type": "service"
 }

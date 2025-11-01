@@ -23,3 +23,11 @@ func ToDTOItemResponseList(items []domain.Item) []dto.DTOItemResponse {
 	}
 	return res
 }
+
+// DTO -> Domain
+func ToDomainAddItemRequest(req dto.DTOAddItemRequest) domain.Item {
+	return domain.Item{
+		Name: req.Name,
+		Type: req.Type,
+	}
+}

@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Layout from "./components/Layout";
-import { Invoices, Items } from "./pages";
+import { Invoices } from "./pages";
 import AddInvoices from "./pages/AddInvoices";
 import EditInvoices from "./pages/EditInvoices";
 import ViewInvoice from "./pages/ViewInvoice";
+import Settings from "./pages/Setting";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -27,7 +28,7 @@ function App() {
             <Route path="/invoices/add" element={<AddInvoices />} />
             <Route path="/invoices/edit/:id" element={<EditInvoices />} />
             <Route path="/invoices/view/:id" element={<ViewInvoice />} />
-            <Route path="/items" element={<Items />} />
+            <Route path="/settings" element={<Settings />} />
           </Routes>
         </Layout>
       </BrowserRouter>

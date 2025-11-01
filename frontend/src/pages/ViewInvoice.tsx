@@ -1,11 +1,12 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useEditInvoices } from "../hooks/useEditInvoices";
 import InvoiceDetailsView from "../components/invoices/InvoiceDetailsView";
 import CustomerSelectionView from "../components/invoices/CustomerSelectionView";
 import InvoiceItemsView from "../components/invoices/InvoiceItemsView";
-import InvoiceViewActions from "../components/invoices/InvoiceViewActions";
 import ListInvoiceItemsView from "../components/invoices/ListInvoiceItemsView";
-// import LoadingSpinner from '../../components/LoadingSpinner';
+import { LoadingSpinner } from "../components/ui";
+import { PrintInvoiceButton } from "../components/invoices";
+import { ArrowDownToLine } from "lucide-react";
 
 export default function ViewInvoice() {
   const { id } = useParams<{ id: string }>();
@@ -19,7 +20,7 @@ export default function ViewInvoice() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-2 border-gray-300 border-t-blue-600"></div>
+        <LoadingSpinner />
       </div>
     );
   }
@@ -95,17 +96,24 @@ export default function ViewInvoice() {
   }
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen max-w-[1200px] w-full">
+
+      <div className="flex flex-row text-sm gap-x-2 mb-2">
+        <Link to="/">Home</Link>
+        <p>{">"}</p>
+        <p className="text-accent-200">View Invoice</p>
+      </div>
+
       <div className="">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-8 w-full">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">View Invoice</h1>
             </div>
             <div className="flex items-center space-x-2">
               <span
-                className={`inline-flex items-center px-6 py-2 rounded-lg font-medium ${
+                className={`inline-flex items-center px-6 py-2 rounded-lg font-medium text-sm h-[42px] ${
                   invoice.status === "paid"
                     ? "bg-green-100 text-green-800"
                     : "bg-red-100 text-red-800"
@@ -115,13 +123,21 @@ export default function ViewInvoice() {
                 {invoice.status.charAt(0).toUpperCase() +
                   invoice.status.slice(1)}
               </span>
+
+              <PrintInvoiceButton 
+                invoice={invoice}
+                className="w-[147px] h-[42px] flex flex-row items-center gap-2 font-bold rounded-[10px] text-sm bg-[#56AD62] text-white justify-center px-[20px] py-[12px]"
+              >
+              <ArrowDownToLine size={16} />
+                Download
+              </PrintInvoiceButton>
             </div>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="space-y-8 flex flex-row gap-6">
-          <div className="w-full">
+        <div id="invoice-content" className="space-y-8 flex flex-row gap-[60px]">
+          <div className="w-full max-w-[840px]">
             {/* Invoice Details */}
             <div className="">
               <h2 className="text-lg font-medium text-gray-900 mb-4">
@@ -145,9 +161,9 @@ export default function ViewInvoice() {
             </div>
           </div>
 
-          <div className="w-[400px] rounded-md shadow-lg bg-white self-baseline p-6">
+          <div className="w-full max-w-[270px] rounded-lg shadow-lg bg-white self-baseline p-6">
             {/* Invoice Items */}
-            <div className="bg-white shadow-sm rounded-lg overflow-hidden">
+            <div className="bg-white shadow-sm overflow-hidden">
               <h2 className="text-lg font-medium text-gray-900 mb-4">
                 Invoice Summary
               </h2>

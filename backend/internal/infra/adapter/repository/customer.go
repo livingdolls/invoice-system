@@ -5,6 +5,7 @@ import (
 	"invoice-system/internal/domain"
 	"invoice-system/internal/infra/db/mapper"
 	"invoice-system/internal/infra/db/models"
+	"invoice-system/internal/utils"
 
 	"gorm.io/gorm"
 )
@@ -22,6 +23,10 @@ func (c *customerRepository) CreateCustomer(customer *domain.Customer) error {
 	m := mapper.ToModelCustomer(*customer)
 
 	if err := c.db.Create(&m).Error; err != nil {
+		if utils.IsDuplicateKeyError(err) {
+			return utils.ErrCustomerAlreadyExists
+		}
+
 		return err
 	}
 

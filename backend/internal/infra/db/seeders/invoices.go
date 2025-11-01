@@ -21,7 +21,7 @@ func SeedInvoices(db *gorm.DB) error {
 	now := time.Now()
 	invoices := []models.Invoice{
 		{
-			InvoiceNumber: "INV-001",
+			InvoiceNumber: "001",
 			IssueDate:     now.AddDate(0, 0, -30),
 			DueDate:       now.AddDate(0, 0, -16),
 			Subject:       "Website Development Project",
@@ -35,7 +35,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -15),
 		},
 		{
-			InvoiceNumber: "INV-002",
+			InvoiceNumber: "002",
 			IssueDate:     now.AddDate(0, 0, -28),
 			DueDate:       now.AddDate(0, 0, -14),
 			Subject:       "Mobile App Development",
@@ -49,7 +49,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -13),
 		},
 		{
-			InvoiceNumber: "INV-003",
+			InvoiceNumber: "003",
 			IssueDate:     now.AddDate(0, 0, -25),
 			DueDate:       now.AddDate(0, 0, -11),
 			Subject:       "E-commerce Platform Setup",
@@ -63,7 +63,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -25),
 		},
 		{
-			InvoiceNumber: "INV-004",
+			InvoiceNumber: "004",
 			IssueDate:     now.AddDate(0, 0, -22),
 			DueDate:       now.AddDate(0, 0, -8),
 			Subject:       "Database Migration Services",
@@ -77,7 +77,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -7),
 		},
 		{
-			InvoiceNumber: "INV-005",
+			InvoiceNumber: "005",
 			IssueDate:     now.AddDate(0, 0, -20),
 			DueDate:       now.AddDate(0, 0, -6),
 			Subject:       "API Development & Integration",
@@ -91,7 +91,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -20),
 		},
 		{
-			InvoiceNumber: "INV-006",
+			InvoiceNumber: "006",
 			IssueDate:     now.AddDate(0, 0, -18),
 			DueDate:       now.AddDate(0, 0, -4),
 			Subject:       "UI/UX Design Services",
@@ -105,7 +105,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -3),
 		},
 		{
-			InvoiceNumber: "INV-007",
+			InvoiceNumber: "007",
 			IssueDate:     now.AddDate(0, 0, -15),
 			DueDate:       now.AddDate(0, 0, -1),
 			Subject:       "Cloud Infrastructure Setup",
@@ -119,7 +119,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -15),
 		},
 		{
-			InvoiceNumber: "INV-008",
+			InvoiceNumber: "008",
 			IssueDate:     now.AddDate(0, 0, -12),
 			DueDate:       now.AddDate(0, 0, 2),
 			Subject:       "SEO Optimization Package",
@@ -133,7 +133,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -12),
 		},
 		{
-			InvoiceNumber: "INV-009",
+			InvoiceNumber: "009",
 			IssueDate:     now.AddDate(0, 0, -10),
 			DueDate:       now.AddDate(0, 0, 4),
 			Subject:       "Content Management System",
@@ -147,7 +147,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -10),
 		},
 		{
-			InvoiceNumber: "INV-010",
+			InvoiceNumber: "010",
 			IssueDate:     now.AddDate(0, 0, -8),
 			DueDate:       now.AddDate(0, 0, 6),
 			Subject:       "Security Audit & Penetration Testing",
@@ -161,7 +161,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -8),
 		},
 		{
-			InvoiceNumber: "INV-011",
+			InvoiceNumber: "011",
 			IssueDate:     now.AddDate(0, 0, -6),
 			DueDate:       now.AddDate(0, 0, 8),
 			Subject:       "Data Analytics Dashboard",
@@ -175,7 +175,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -6),
 		},
 		{
-			InvoiceNumber: "INV-012",
+			InvoiceNumber: "012",
 			IssueDate:     now.AddDate(0, 0, -4),
 			DueDate:       now.AddDate(0, 0, 10),
 			Subject:       "DevOps Implementation",
@@ -189,7 +189,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -4),
 		},
 		{
-			InvoiceNumber: "INV-013",
+			InvoiceNumber: "013",
 			IssueDate:     now.AddDate(0, 0, -2),
 			DueDate:       now.AddDate(0, 0, 12),
 			Subject:       "Progressive Web App Development",
@@ -203,7 +203,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -2),
 		},
 		{
-			InvoiceNumber: "INV-014",
+			InvoiceNumber: "014",
 			IssueDate:     now,
 			DueDate:       now.AddDate(0, 0, 14),
 			Subject:       "Machine Learning Model Development",
@@ -217,7 +217,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now,
 		},
 		{
-			InvoiceNumber: "INV-015",
+			InvoiceNumber: "015",
 			IssueDate:     now.AddDate(0, 0, -35),
 			DueDate:       now.AddDate(0, 0, -21),
 			Subject:       "Legacy System Modernization",
@@ -231,7 +231,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -20),
 		},
 		{
-			InvoiceNumber: "INV-016",
+			InvoiceNumber: "016",
 			IssueDate:     now.AddDate(0, 0, -32),
 			DueDate:       now.AddDate(0, 0, -18),
 			Subject:       "Blockchain Integration Services",
@@ -245,7 +245,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -17),
 		},
 		{
-			InvoiceNumber: "INV-017",
+			InvoiceNumber: "017",
 			IssueDate:     now.AddDate(0, 0, -29),
 			DueDate:       now.AddDate(0, 0, -15),
 			Subject:       "IoT Platform Development",
@@ -259,7 +259,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -29),
 		},
 		{
-			InvoiceNumber: "INV-018",
+			InvoiceNumber: "018",
 			IssueDate:     now.AddDate(0, 0, -26),
 			DueDate:       now.AddDate(0, 0, -12),
 			Subject:       "Microservices Architecture",
@@ -273,7 +273,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -11),
 		},
 		{
-			InvoiceNumber: "INV-019",
+			InvoiceNumber: "019",
 			IssueDate:     now.AddDate(0, 0, -23),
 			DueDate:       now.AddDate(0, 0, -9),
 			Subject:       "Performance Optimization",
@@ -287,7 +287,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -23),
 		},
 		{
-			InvoiceNumber: "INV-020",
+			InvoiceNumber: "020",
 			IssueDate:     now.AddDate(0, 0, -19),
 			DueDate:       now.AddDate(0, 0, -5),
 			Subject:       "Quality Assurance Testing",
@@ -301,7 +301,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -4),
 		},
 		{
-			InvoiceNumber: "INV-021",
+			InvoiceNumber: "021",
 			IssueDate:     now.AddDate(0, 0, -16),
 			DueDate:       now.AddDate(0, 0, -2),
 			Subject:       "Digital Marketing Automation",
@@ -315,7 +315,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -16),
 		},
 		{
-			InvoiceNumber: "INV-022",
+			InvoiceNumber: "022",
 			IssueDate:     now.AddDate(0, 0, -13),
 			DueDate:       now.AddDate(0, 0, 1),
 			Subject:       "Real-time Chat System",
@@ -329,7 +329,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -13),
 		},
 		{
-			InvoiceNumber: "INV-023",
+			InvoiceNumber: "023",
 			IssueDate:     now.AddDate(0, 0, -11),
 			DueDate:       now.AddDate(0, 0, 3),
 			Subject:       "Video Streaming Platform",
@@ -343,7 +343,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -11),
 		},
 		{
-			InvoiceNumber: "INV-024",
+			InvoiceNumber: "024",
 			IssueDate:     now.AddDate(0, 0, -9),
 			DueDate:       now.AddDate(0, 0, 5),
 			Subject:       "Document Management System",
@@ -357,7 +357,7 @@ func SeedInvoices(db *gorm.DB) error {
 			UpdatedAt:     now.AddDate(0, 0, -9),
 		},
 		{
-			InvoiceNumber: "INV-025",
+			InvoiceNumber: "025",
 			IssueDate:     now.AddDate(0, 0, -7),
 			DueDate:       now.AddDate(0, 0, 7),
 			Subject:       "Payment Gateway Integration",

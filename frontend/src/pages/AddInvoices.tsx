@@ -6,6 +6,8 @@ import InvoiceDetailsForm from "../components/invoices/InvoiceDetailsForm";
 import CustomerSelection from "../components/invoices/CustomerSelection";
 import InvoiceItemsManager from "../components/invoices/InvoiceItemsManager";
 import InvoiceActions from "../components/invoices/InvoiceActions";
+import AlertDialog from "../components/ui/AlertDialog";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function AddInvoices() {
   const {
@@ -24,7 +26,10 @@ export default function AddInvoices() {
     prepareInvoiceData,
     resetForm,
     setAddress,
+    dialog,
+    setDialog,
   } = useInvoiceForm();
+  const navigate = useNavigate();
 
   const { mutate: submitInvoice, isPending: isSubmitting } = useCreateInvoice();
 
@@ -43,6 +48,8 @@ export default function AddInvoices() {
           alert("Invoice created successfully!");
           console.log("Invoice created:", response);
           resetForm();
+          navigate("/invoices")
+
         },
         onError: (error) => {
           alert(`Error creating invoice: ${error.message}`);
@@ -57,52 +64,64 @@ export default function AddInvoices() {
 
   const handleCancel = () => {
     resetForm();
-  };
-
-  const handleSaveDraft = () => {
-    alert("Save draft functionality not implemented yet");
+    navigate("/invoices");
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-gray-50 min-h-screen">
+    <div className="min-h-screen">
+      <div className="flex flex-row text-sm gap-x-2 mb-2">
+        <Link to="/">Home</Link>
+        <p>{">"}</p>
+        <p className="text-accent-200">Add Invoice</p>
+      </div>
+      
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Create Invoice
+        <h1 className="text-3xl font-bold text-gray-900">
+          Add Invoice
         </h1>
-        <p className="text-gray-600">
-          Fill in the details below to create a new invoice
-        </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 border-b">
-        <InvoiceDetailsForm
-          formData={formData}
-          onFormChange={handleFormChange}
-        />
+      <div className="flex flex-row gap-[60px]">
+        <div className="flex flex-col gap-y-[30px] max-w-[840px]">
+          <InvoiceDetailsForm
+            formData={formData}
+            onFormChange={handleFormChange}
+          />
 
-        <CustomerSelection
-          selectedCustomer={selectedCustomer}
-          onCustomerChange={handleCustomerChange}
-          onAddressChange={setAddress}
-          address={address}
+          <CustomerSelection
+            selectedCustomer={selectedCustomer}
+            onCustomerChange={handleCustomerChange}
+            onAddressChange={setAddress}
+            address={address}
+          />
+
+          <InvoiceItemsManager
+            invoiceItems={invoiceItems}
+            onQuantityChange={handleQuantityChange}
+            onPriceChange={handlePriceChange}
+            onRemoveItem={handleRemoveItem}
+            onItemSelect={handleItemSelect}
+            onItemsSelect={handleItemsSelect}
+          />
+        </div>
+
+        <InvoiceActions
+          onSubmit={() => setDialog(true)}
+          onCancel={handleCancel}
+          invoiceItems={invoiceItems}
+          isSubmitting={isSubmitting}
+          canSubmit={isFormValid()}
         />
       </div>
 
-      <InvoiceItemsManager
-        invoiceItems={invoiceItems}
-        onQuantityChange={handleQuantityChange}
-        onPriceChange={handlePriceChange}
-        onRemoveItem={handleRemoveItem}
-        onItemSelect={handleItemSelect}
-        onItemsSelect={handleItemsSelect}
-      />
-
-      <InvoiceActions
-        onSubmit={handleSubmitInvoice}
-        onCancel={handleCancel}
-        onSaveDraft={handleSaveDraft}
-        isSubmitting={isSubmitting}
-        canSubmit={isFormValid()}
+      <AlertDialog 
+        open={dialog}
+        onClose={() => setDialog(false)}
+        onConfirm={handleSubmitInvoice}
+        title="Are you sure to submit invoice?"
+        description=""
+        confirmText="Yes Submit"
+        cancelText="No, back"
       />
     </div>
   );

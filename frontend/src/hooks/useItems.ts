@@ -7,7 +7,6 @@ export const useItems = () => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [createInvoice, setCreateInvoice] = useState<TCreateInvoice>({
-    invoice_number: "",
     issue_date: "",
     due_date: "",
     subject: "",

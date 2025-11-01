@@ -7,6 +7,7 @@ import (
 	"invoice-system/internal/infra/db/models"
 	"invoice-system/internal/infra/db/seeders"
 	"invoice-system/internal/infra/logger"
+	"log"
 	"time"
 
 	"go.uber.org/zap"
@@ -31,7 +32,15 @@ func NewDatabase(cfg config.DatabaseConfig) (*Database, error) {
 
 	db, err := gorm.Open(mysql.Open(dsn), gormConfig)
 
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect DB: %w", err)
+	}
+
 	sqlDB, err := db.DB()
+
+	log.Printf("DSN = %s", dsn)
+	pingErr := sqlDB.Ping()
+	log.Printf("PING ERROR = %v", pingErr)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect DB: %w", err)

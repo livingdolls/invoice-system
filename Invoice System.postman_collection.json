@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "9b73965d-f56a-46f5-a8c7-3394e6c90870",
+		"name": "Invoice System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16216157"
+	},
+	"item": [
+		{
+			"name": "Create Customer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"John Does\",\n    \"email\": \"johndoe@gmail.com\",\n    \"phone\": \"123-456-7890\",\n    \"address\": \"123 Main St, Anytown, USA\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Customers",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"johndoe@gmail.com\",\n    \"phone\": \"123-456-7890\",\n    \"address\": \"123 Main St, Anytown, USA\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Items",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"johndoe@gmail.com\",\n    \"phone\": \"123-456-7890\",\n    \"address\": \"123 Main St, Anytown, USA\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/items?name_or_type=service&limit=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"items"
+					],
+					"query": [
+						{
+							"key": "name_or_type",
+							"value": "service"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Invoices",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/invoices?issue_date=&subject=&total_items=&customer_name=&limit=10&page=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"invoices"
+					],
+					"query": [
+						{
+							"key": "issue_date",
+							"value": ""
+						},
+						{
+							"key": "subject",
+							"value": ""
+						},
+						{
+							"key": "total_items",
+							"value": ""
+						},
+						{
+							"key": "customer_name",
+							"value": ""
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Invoice by ID",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/invoices/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"invoices",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Invoice",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"issue_date\": \"2025-10-30T00:00:00Z\",\n  \"due_date\": \"2025-11-15T00:00:00Z\",\n  \"subject\": \"Create Invoice\",\n  \"customer_id\": 1,\n  \"items\": [\n    {\n      \"item_id\": 1,\n      \"quantity\": 3,\n      \"price\": 2000000\n    },\n    {\n      \"item_id\": 2,\n      \"quantity\": 5,\n      \"price\": 3000000\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/invoices",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"invoices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Invoices",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"issue_date\": \"2025-10-30T00:00:00Z\",\n  \"due_date\": \"2025-11-30T00:00:00Z\",\n  \"subject\": \"Createa Invoices Updated\",\n  \"customer_id\": 1,\n  \"items\": [\n    {\n      \"item_id\": 1,\n      \"quantity\": 2,\n      \"price\": 500000\n    },\n    {\n      \"item_id\": 2,\n      \"quantity\": 1,\n      \"price\": 300000\n    }\n  ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/invoices/55",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"invoices",
+						"55"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

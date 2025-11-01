@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useEditInvoices } from "../hooks/useEditInvoices";
 import { useUpdateInvoice } from "../hooks/useUpdateInvoice";
 import { useEditInvoiceForm } from "../hooks/useEditInvoiceForm";
@@ -8,6 +8,7 @@ import InvoiceDetailsForm from "../components/invoices/InvoiceDetailsForm";
 import CustomerSelection from "../components/invoices/CustomerSelection";
 import InvoiceItemsManager from "../components/invoices/InvoiceItemsManager";
 import InvoiceActions from "../components/invoices/InvoiceActions";
+import AlertDialog from "../components/ui/AlertDialog";
 
 export default function EditInvoices() {
   const { id } = useParams();
@@ -42,6 +43,8 @@ export default function EditInvoices() {
     isFormValid,
     prepareInvoiceData,
     setAddress,
+    dialog,
+    setDialog
   } = useEditInvoiceForm(invoiceData);
 
   // Handler untuk update invoice
@@ -79,10 +82,6 @@ export default function EditInvoices() {
     navigate("/invoices");
   };
 
-  const handleSaveDraft = () => {
-    alert("Save draft functionality not implemented yet");
-  };
-
   if (isLoading) {
     return (
       <div className="max-w-6xl mx-auto p-6 bg-gray-50 min-h-screen">
@@ -117,49 +116,67 @@ export default function EditInvoices() {
 
   return (
     <div className="min-h-screen">
+      <div className="flex flex-row text-sm gap-x-2 mb-2">
+        <Link to="/">Home</Link>
+        <p>{">"}</p>
+        <p className="text-accent-200">Edit Invoice</p>
+      </div>
+      
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Edit Invoice</h1>
-        <p className="text-gray-600">
-          Update the details below to edit invoice #
-          {invoiceData?.invoice_number}
-        </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 border-b">
+      <div className="flex flex-row gap-[60px]">
+        <div className="flex flex-col gap-y-[30px] w-full max-w-[840px]">
         {/* Invoice Details Section */}
-        <InvoiceDetailsForm
-          formData={formData}
-          onFormChange={handleFormChange}
+          <InvoiceDetailsForm
+            formData={formData}
+            onFormChange={handleFormChange}
+          />
+
+          {/* Customer Information Section */}
+          <CustomerSelection
+            selectedCustomer={selectedCustomer}
+            onCustomerChange={handleCustomerChange}
+            onAddressChange={setAddress}
+            address={address}
+          />
+
+
+          {/* Invoice Items Section */}
+          <InvoiceItemsManager
+            invoiceItems={invoiceItems}
+            onQuantityChange={handleQuantityChange}
+            onPriceChange={handlePriceChange}
+            onRemoveItem={handleRemoveItem}
+            onItemSelect={handleItemSelect}
+            onItemsSelect={handleItemsSelect}
+          />
+        </div>
+
+
+        {/* Action Buttons */}
+        <InvoiceActions
+          onSubmit={() => setDialog(true)}
+          onCancel={handleCancel}
+          isSubmitting={isUpdating}
+          canSubmit={isFormValid()}
+          invoiceItems={invoiceItems}
+          mode="edit"
         />
 
-        {/* Customer Information Section */}
-        <CustomerSelection
-          selectedCustomer={selectedCustomer}
-          onCustomerChange={handleCustomerChange}
-          onAddressChange={setAddress}
-          address={address}
-        />
       </div>
 
-      {/* Invoice Items Section */}
-      <InvoiceItemsManager
-        invoiceItems={invoiceItems}
-        onQuantityChange={handleQuantityChange}
-        onPriceChange={handlePriceChange}
-        onRemoveItem={handleRemoveItem}
-        onItemSelect={handleItemSelect}
-        onItemsSelect={handleItemsSelect}
+      <AlertDialog 
+        open={dialog}
+        onClose={() => setDialog(false)}
+        onConfirm={handleUpdateInvoice}
+        title="Are you sure to update invoice?"
+        description=""
+        confirmText="Yes Update"
+        cancelText="No, back"
       />
-
-      {/* Action Buttons */}
-      <InvoiceActions
-        onSubmit={handleUpdateInvoice}
-        onCancel={handleCancel}
-        onSaveDraft={handleSaveDraft}
-        isSubmitting={isUpdating}
-        canSubmit={isFormValid()}
-        mode="edit"
-      />
+      
     </div>
   );
 }

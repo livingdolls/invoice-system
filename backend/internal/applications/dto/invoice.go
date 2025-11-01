@@ -6,6 +6,7 @@ type GetInvoiceFilterRequest struct {
 	InvoiceID    *string    `form:"invoice_id"`
 	IssueDate    *time.Time `form:"issue_date"`
 	Subject      *string    `form:"subject"`
+	TotalItems   *int       `form:"total_items"`
 	CustomerName string     `form:"customer_name"`
 	DueDate      *time.Time `form:"due_date"`
 	Status       string     `form:"status"`
@@ -63,27 +64,25 @@ type CreateInvoiceItemRequest struct {
 }
 
 type CreateInvoiceRequest struct {
-	InvoiceNumber string                     `json:"invoice_number" validate:"required"`
-	IssueDate     time.Time                  `json:"issue_date" validate:"required"`
-	DueDate       time.Time                  `json:"due_date" validate:"required"`
-	Subject       string                     `json:"subject"`
-	CustomerID    uint                       `json:"customer_id" validate:"required"`
-	Subtotal      float64                    `json:"subtotal" validate:"required,gt=0"`
-	TotalAmount   float64                    `json:"total_amount" validate:"required,gt=0"`
-	Status        string                     `json:"status" validate:"oneof=paid unpaid"`
-	Items         []CreateInvoiceItemRequest `json:"items" validate:"required,dive"`
+	IssueDate   time.Time                  `json:"issue_date" validate:"required"`
+	DueDate     time.Time                  `json:"due_date" validate:"required"`
+	Subject     string                     `json:"subject"`
+	CustomerID  uint                       `json:"customer_id" validate:"required"`
+	Subtotal    float64                    `json:"subtotal" validate:"required,gt=0"`
+	TotalAmount float64                    `json:"total_amount" validate:"required,gt=0"`
+	Status      string                     `json:"status" validate:"oneof=paid unpaid"`
+	Items       []CreateInvoiceItemRequest `json:"items" validate:"required,dive"`
 }
 
 // UpdateInvoiceRequest represents the request payload for updating an invoice
 type UpdateInvoiceRequest struct {
-	InvoiceNumber string    `json:"invoice_number"`
-	IssueDate     time.Time `json:"issue_date"`
-	DueDate       time.Time `json:"due_date"`
-	Tax           float64
-	Subject       string             `json:"subject"`
-	CustomerID    uint               `json:"customer_id"`
-	Status        string             `json:"status"`
-	Items         []InvoiceItemInput `json:"items"`
+	IssueDate  time.Time `json:"issue_date"`
+	DueDate    time.Time `json:"due_date"`
+	Tax        float64
+	Subject    string             `json:"subject"`
+	CustomerID uint               `json:"customer_id"`
+	Status     string             `json:"status"`
+	Items      []InvoiceItemInput `json:"items"`
 }
 
 type InvoiceItemInput struct {

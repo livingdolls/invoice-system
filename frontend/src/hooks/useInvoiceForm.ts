@@ -8,14 +8,13 @@ export function useInvoiceForm() {
     useState<CustomerOption | null>(null);
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([]);
   const [address, setAddress] = useState<string>("");
+  const [dialog, setDialog] = useState<boolean>(false);
 
   // Form state
   const [formData, setFormData] = useState({
-    invoiceNumber: "",
     issueDate: "",
     dueDate: "",
     subject: "",
-    additionalNotes: "",
   });
 
   // Handler untuk update form data
@@ -90,7 +89,6 @@ export function useInvoiceForm() {
   // Validation function
   const isFormValid = () => {
     return (
-      formData.invoiceNumber.trim() !== "" &&
       formData.issueDate !== "" &&
       formData.dueDate !== "" &&
       formData.subject.trim() !== "" &&
@@ -107,7 +105,6 @@ export function useInvoiceForm() {
     }
 
     return {
-      invoice_number: formData.invoiceNumber,
       issue_date: new Date(formData.issueDate).toISOString(),
       due_date: new Date(formData.dueDate).toISOString(),
       subject: formData.subject,
@@ -123,11 +120,9 @@ export function useInvoiceForm() {
   // Reset form
   const resetForm = () => {
     setFormData({
-      invoiceNumber: "",
       issueDate: "",
       dueDate: "",
       subject: "",
-      additionalNotes: "",
     });
     setSelectedCustomer(null);
     setInvoiceItems([]);
@@ -150,12 +145,12 @@ export function useInvoiceForm() {
     handlePriceChange,
     handleRemoveItem,
 
-    // Utilities
     isFormValid,
     prepareInvoiceData,
     resetForm,
-
-    // Setters for direct access if needed
     setAddress,
+
+    dialog,
+    setDialog,
   };
 }

@@ -1,3 +1,4 @@
+import { ChevronDown } from "lucide-react";
 import type { TInvoiceItemDetail } from "../../types/invoice";
 
 type InvoiceItemsViewProps = {
@@ -16,40 +17,44 @@ export default function ListInvoiceItemsView({ items }: InvoiceItemsViewProps) {
             className=" mb-4 flex flex-row gap-x-4"
           >
             <div className="flex flex-col">
-              <label>Item</label>
-              <input
-                type="disabled"
-                className="h-14 rounded px-6"
-                disabled
-                value={item.item_name}
-              />
+              <label className="text-sm mb-[6px]">Item</label>
+              <div className="relative">
+                <input
+                  type="disabled"
+                  className="bg-input-600 h-[45px] w-[297px] rounded-md px-[16px] py-[14px] text-[#9B9FB0] text-sm"
+                  disabled
+                  value={item.item_name}
+                />
+
+                <ChevronDown className="absolute right-4 inset-y-1/2 transform -translate-y-1/2" />
+                </div>
             </div>
 
             <div className="flex flex-col">
-              <label>Qty</label>
+              <label className="text-sm mb-[6px]">Qty</label>
               <input
                 type="disabled"
-                className="h-14 rounded w-[100px] text-right px-6"
+                className="bg-input-600 h-[45px] rounded-md w-[84px] text-right px-[16px] py-[14px] text-[#9B9FB0] text-sm"
                 disabled
                 value={item.quantity}
               />
             </div>
 
             <div className="flex flex-col">
-              <label>Unit Price</label>
+              <label className="text-sm mb-[6px]">Unit Price</label>
               <input
                 type="disabled"
-                className="h-14 rounded w-[200px] text-right px-6"
+                className="bg-input-600 h-[45px] rounded-md w-[189px] text-right px-[16px] py-[14px] text-[#9B9FB0] text-sm"
                 disabled
                 value={item.price}
               />
             </div>
 
             <div className="flex flex-col">
-              <label>Unit Price</label>
+              <label className="text-sm mb-[6px]">Unit Price</label>
               <input
                 type="disabled"
-                className="h-14 rounded w-[200px] text-right px-6"
+                className="bg-input-600 h-[45px] rounded-md w-[189px] text-right px-[16px] py-[14px] text-[#9B9FB0] text-sm"
                 disabled
                 value={item.total_price}
               />

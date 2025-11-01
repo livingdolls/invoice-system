@@ -12,6 +12,7 @@ func ToDomainInvoiceFilter(req dto.GetInvoiceFilterRequest) domain.InvoiceFilter
 		InvoiceID:    req.InvoiceID,
 		IssueDate:    req.IssueDate,
 		Subject:      req.Subject,
+		TotalItems:   req.TotalItems,
 		CustomerName: req.CustomerName,
 		DueDate:      req.DueDate,
 		Status:       req.Status,

@@ -52,6 +52,7 @@ type InvoiceFilter struct {
 	CustomerName string
 	DueDate      *time.Time
 	Status       string
+	TotalItems   *int
 
 	Limit  int
 	Page   int

@@ -1,13 +1,13 @@
 import { useState, type FC } from "react";
 import type { TItem } from "../../types/item";
-import { Search } from "lucide-react";
+import { Check, Search } from "lucide-react";
 
 type ModalItemsProps = {
   items: TItem[] | undefined;
   open: boolean;
   onClose: () => void;
-  onItemSelect?: (item: TItem) => void; // untuk single selection
-  onItemsSelect?: (items: TItem[]) => void; // untuk multiple selection
+  onItemSelect?: (item: TItem) => void;
+  onItemsSelect?: (items: TItem[]) => void;
   mode: "single" | "multiple";
   search: string;
   handleSearch: (term: string) => void;
@@ -70,27 +70,26 @@ export const ModalItems: FC<ModalItemsProps> = ({
     onClose();
   };
 
-  console.log(items);
   return (
     <>
       {open && (
         <>
           <div
-            className="fixed inset-0 bg-purple-900 bg-opacity-70 flex items-center justify-center z-50"
+            className="fixed inset-0 bg-[#0E123E] bg-opacity-70 flex items-center justify-center z-50"
             onClick={handleClose}
           >
             <div
-              className="bg-white rounded-lg shadow-lg w-2/5 max-h-4/5 overflow-hidden flex flex-col"
+              className="bg-[#F4F7FD] rounded-[20px] shadow-lg h-[80vh] max-h-[530px] w-[80vw] max-w-[568px] flex flex-col p-[30px]"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
-              <div className="p-6 border-b">
-                <h2 className="text-xl font-semibold text-center text-gray-800">
-                  {mode === "single" ? "Select Item" : "Select Items"}
+              <div className="">
+                <h2 className="text-xl font-semibold text-center">
+                  Add Items
                 </h2>
 
                 {/* Search */}
-                <div className="relative flex flex-row bg-gray-50 items-center rounded p-2 gap-x-2 mt-4">
+                <div className="relative flex flex-row items-center rounded p-2 gap-x-2 mt-4 shadow-input">
                   <Search className="text-gray-400" />
                   <input
                     type="text"
@@ -103,50 +102,76 @@ export const ModalItems: FC<ModalItemsProps> = ({
               </div>
 
               {/* Items List */}
-              <div className="flex-1 overflow-y-auto max-h-[500px] p-6">
-                <div className="grid grid-cols-6 gap-x-4 mb-4">
-                  <div className="font-bold text-gray-700 col-span-1">
-                    Select
+              <div className="flex-1 overflow-y-auto max-h-[500px] mt-[32px]">
+                <div className="grid grid-cols-6 gap-x-4 mb-4 px-3">
+                  <div className="font-bold  col-span-3">Item</div>
+                  <div className="font-bold  col-span-2">Type</div>
+                  <div className="font-bold  col-span-1">
                   </div>
-                  <div className="font-bold text-gray-700 col-span-3">Item</div>
-                  <div className="font-bold text-gray-700 col-span-2">Type</div>
                 </div>
 
                 {items?.map((item) => (
                   <div
                     key={item.id}
-                    className="p-4 mb-2 bg-gray-50 rounded shadow hover:bg-gray-100 transition-colors grid grid-cols-6 gap-x-4 items-center cursor-pointer"
+                    className={`p-3 border-b border-gray-200 grid grid-cols-6 gap-x-4 items-center cursor-pointer 
+                      ${
+                        mode === 'single' ? selectedItem?.id === item.id ? 'bg-[#EEE8FA]' : '' : selectedItems.some((selectedItem) => selectedItem.id === item.id) ? 'bg-[#EEE8FA]' : ''
+                      }
+                    `}
                     onClick={() =>
                       mode === "single"
                         ? handleSingleItemChange(item)
                         : handleMultipleItemToggle(item)
                     }
                   >
-                    <div className="col-span-1">
-                      {mode === "single" ? (
-                        <input
-                          type="radio"
-                          name="selectedItem"
-                          checked={selectedItem?.id === item.id}
-                          onChange={() => handleSingleItemChange(item)}
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                        />
-                      ) : (
-                        <input
-                          type="checkbox"
-                          checked={selectedItems.some(
-                            (selectedItem) => selectedItem.id === item.id
-                          )}
-                          onChange={() => handleMultipleItemToggle(item)}
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                        />
-                      )}
-                    </div>
                     <div className="col-span-3">
-                      <h3 className="font-medium text-gray-900">{item.name}</h3>
+                      <h3 className="font-medium text-sm">{item.name}</h3>
                     </div>
                     <div className="col-span-2">
-                      <p className="text-gray-600">{item.type}</p>
+                      <p className="text-sm font-medium">{item.type}</p>
+                    </div>
+
+                    <div className="col-span-1 flex justify-end">
+                      {mode === "single" ? (
+                        <div className="relative">
+                          <input
+                            type="radio"
+                            name="selectedItem"
+                            checked={selectedItem?.id === item.id}
+                            onChange={() => handleSingleItemChange(item)}
+                            className="sr-only"
+                          />
+                          <div className={`w-6 h-6 border-2 flex items-center justify-center cursor-pointer ${
+                            selectedItem?.id === item.id 
+                              ? 'bg-[#AF91EB] border-[#AF91EB]'
+                              : 'border-[#AF91EB] bg-white'
+                          }`}>
+                            {selectedItem?.id === item.id && (
+                              <Check size={16} color="white" strokeWidth={2} />
+                            )}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="relative">
+                          <input
+                            type="checkbox"
+                            checked={selectedItems.some(
+                              (selectedItem) => selectedItem.id === item.id
+                            )}
+                            onChange={() => handleMultipleItemToggle(item)}
+                            className="sr-only"
+                          />
+                          <div className={`w-6 h-6 border-2 rounded flex items-center justify-center cursor-pointer ${
+                            selectedItems.some((selectedItem) => selectedItem.id === item.id)
+                              ? 'bg-[#AF91EB] border-[#AF91EB]'
+                              : 'border-[#AF91EB] bg-white'
+                          }`}>
+                            {selectedItems.some((selectedItem) => selectedItem.id === item.id) && (
+                              <Check size={16} color="white" strokeWidth={2} />
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -159,10 +184,10 @@ export const ModalItems: FC<ModalItemsProps> = ({
               </div>
 
               {/* Footer */}
-              <div className="p-6 border-t bg-gray-50 flex justify-center gap-x-4">
+              <div className="mt-[32px] flex justify-center gap-x-4">
                 <button
                   onClick={handleClose}
-                  className="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="h-[43px] px-[20px] w-[170px] border border-[#FF8780] text-[#FF8780] rounded-lg font-bold"
                 >
                   Cancel
                 </button>
@@ -173,15 +198,15 @@ export const ModalItems: FC<ModalItemsProps> = ({
                       ? !selectedItem
                       : selectedItems.length === 0
                   }
-                  className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  className="h-[43px] px-[20px] w-[170px] border bg-[#AF91EB]  shadow-purple text-white rounded-lg font-bold"
                 >
                   {mode === "single"
                     ? selectedItem
-                      ? "Add Item"
+                      ? "1 | Add Item"
                       : "Add Item"
                     : selectedItems.length > 0
-                    ? `Add ${selectedItems.length} Items`
-                    : "Add Items"}
+                      ? `${selectedItems.length} | Add Item (s)`
+                      : "Add Items"}
                 </button>
               </div>
             </div>

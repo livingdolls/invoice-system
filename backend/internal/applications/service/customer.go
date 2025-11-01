@@ -16,15 +16,15 @@ func NewCustomerService(repo repository.CustomerRepository) services.CustomerSer
 }
 
 // Create implements services.CustomerService.
-func (c *customerService) Create(req dto.CreateCustomerRequest) (dto.CustomerResponse, error) {
+func (c *customerService) Create(req dto.CreateCustomerRequest) error {
 	customer := mapper.ToDomainCustomerCreate(req)
 
 	err := c.repo.CreateCustomer(&customer)
 	if err != nil {
-		return dto.CustomerResponse{}, err
+		return err
 	}
 
-	return mapper.ToCustomerResponse(customer), nil
+	return nil
 }
 
 // FindCustomers implements services.CustomerService.

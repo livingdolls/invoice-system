@@ -4,6 +4,7 @@ import (
 	"invoice-system/internal/applications/dto"
 	"invoice-system/internal/applications/ports/services"
 	"invoice-system/internal/infra/adapter/http/response"
+	"invoice-system/internal/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,13 +24,18 @@ func (h *CustomerHandler) CreateCustomer(c *gin.Context) {
 		return
 	}
 
-	customer, err := h.service.Create(req)
+	err := h.service.Create(req)
 	if err != nil {
+		if err == utils.ErrCustomerAlreadyExists {
+			response.ConflictResponse(c, "Customer already exists", nil)
+			return
+		}
+
 		response.InternalServerErrorResponse(c, err)
 		return
 	}
 
-	response.CreatedResponse(c, "Customer created successfully", customer)
+	response.CreatedResponse(c, "Customer created successfully", nil)
 }
 
 // GetAllCustomers retrieves all customers

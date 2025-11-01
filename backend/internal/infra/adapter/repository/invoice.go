@@ -7,10 +7,12 @@ import (
 	"invoice-system/internal/domain"
 	"invoice-system/internal/infra/db/mapper"
 	"invoice-system/internal/infra/db/models"
+	"invoice-system/internal/utils"
 	"math"
 	"time"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type invoiceRepository struct {
@@ -39,6 +41,10 @@ func (i *invoiceRepository) GetAllInvoices(filters domain.InvoiceFilter) ([]doma
 		// filter subject
 		if filters.Subject != nil && *filters.Subject != "" {
 			db = db.Where("subject LIKE ?", "%"+*filters.Subject+"%")
+		}
+
+		if filters.TotalItems != nil {
+			db = db.Where("total_items = ?", filters.TotalItems)
 		}
 
 		// filter customer name
@@ -129,7 +135,18 @@ func (i *invoiceRepository) CreateInvoice(invoice domain.Invoice) error {
 	invModel := mapper.ToModelInvoice(invoice)
 
 	err := i.db.Transaction(func(tx *gorm.DB) error {
-		// Buat invoice terlebih dahulu
+
+		last, err := i.getLastInvoiceCode()
+
+		if err != nil {
+			return fmt.Errorf("failed get last invoice code : %w", err)
+		}
+
+		// generate code invoice
+		codeInvice := utils.GenerateNextInvoiceCode(last)
+		invModel.InvoiceNumber = codeInvice
+
+		// Buat invoice
 		if err := tx.Omit("Items").Create(&invModel).Error; err != nil {
 			return fmt.Errorf("create invoice failed: %w", err)
 		}
@@ -139,7 +156,7 @@ func (i *invoiceRepository) CreateInvoice(invoice domain.Invoice) error {
 			invModel.Items[idx].InvoiceID = invModel.ID
 		}
 
-		// Insert items jika ada
+		// Insert items jika
 		if len(invModel.Items) > 0 {
 			if err := tx.Create(&invModel.Items).Error; err != nil {
 				return fmt.Errorf("create items failed: %w", err)
@@ -161,9 +178,10 @@ func (i *invoiceRepository) GetInvoiceByID(id uint) (domain.Invoice, error) {
 
 	err := i.db.Preload("Customer").Preload("Items.Item").First(&invModel, id).Error
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return domain.Invoice{}, nil
+		if utils.IsNotFound(err) {
+			return domain.Invoice{}, utils.ErrInvoiceNotFound
 		}
+
 		return domain.Invoice{}, fmt.Errorf("failed to get invoice by ID: %w", err)
 	}
 
@@ -228,8 +246,8 @@ func (i *invoiceRepository) UpdateInvoice(id uint, invoice domain.Invoice) error
 			CustomerID:  invoice.CustomerID,
 			Status:      invoice.Status,
 			Subtotal:    subtotal,
-			Tax:         subtotal * 0.11,
-			TotalAmount: subtotal * 1.11,
+			Tax:         subtotal * (10.0 / 100.0),
+			TotalAmount: subtotal + (subtotal * (10.0 / 100.0)),
 			TotalItems:  len(invoice.Items),
 			UpdatedAt:   time.Now(),
 		}).Error; err != nil {
@@ -238,4 +256,12 @@ func (i *invoiceRepository) UpdateInvoice(id uint, invoice domain.Invoice) error
 
 		return nil
 	})
+}
+
+func (i *invoiceRepository) getLastInvoiceCode() (string, error) {
+	var last string
+
+	err := i.db.Table("invoices").Select("invoice_number").Order("invoice_number DESC").Limit(1).Clauses(clause.Locking{Strength: "UPDATE"}).Scan(&last).Error
+
+	return last, err
 }

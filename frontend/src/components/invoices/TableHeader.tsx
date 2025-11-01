@@ -17,9 +17,7 @@ export function TableHeader() {
         {headers.map((header) => (
           <th
             key={header}
-            className={`px-6 py-3 text-left text-sm font-medium  tracking-wider ${
-              header === "Actions" ? "text-center" : ""
-            }`}
+            className={`px-6 text-left text-sm font-medium  tracking-wider`}
           >
             {header}
           </th>

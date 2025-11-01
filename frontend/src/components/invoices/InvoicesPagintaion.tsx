@@ -4,14 +4,12 @@ import type { TPagination } from "../../types/invoice";
 type InvoicesPaginationProps = {
   pagination?: TPagination;
   onPageChange?: (page: number) => void;
-  onPageSizeChange?: (limit: number) => void;
   pageSize?: number;
 };
 
 export default function InvoicesPagination({
   pagination,
   onPageChange,
-  onPageSizeChange,
   pageSize = 10,
 }: InvoicesPaginationProps) {
   if (!pagination) return null;

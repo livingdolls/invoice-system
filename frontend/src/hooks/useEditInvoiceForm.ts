@@ -8,25 +8,22 @@ export function useEditInvoiceForm(initialData?: TInvoiceDetail) {
     useState<CustomerOption | null>(null);
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([]);
   const [address, setAddress] = useState<string>("");
+  const [dialog, setDialog] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
-    invoiceNumber: "",
     issueDate: "",
     dueDate: "",
     subject: "",
-    additionalNotes: "",
   });
 
   // Initialize form with existing data
   useEffect(() => {
     if (initialData) {
       setFormData({
-        invoiceNumber: initialData.invoice_number,
         issueDate: initialData.issue_date.split("T")[0],
         dueDate: initialData.due_date.split("T")[0],
         subject: initialData.subject,
-        additionalNotes: "",
       });
 
       // Set customer
@@ -130,7 +127,6 @@ export function useEditInvoiceForm(initialData?: TInvoiceDetail) {
   // Validation function
   const isFormValid = () => {
     return (
-      formData.invoiceNumber.trim() !== "" &&
       formData.issueDate !== "" &&
       formData.dueDate !== "" &&
       formData.subject.trim() !== "" &&
@@ -147,7 +143,6 @@ export function useEditInvoiceForm(initialData?: TInvoiceDetail) {
     }
 
     return {
-      invoice_number: formData.invoiceNumber,
       issue_date: new Date(formData.issueDate).toISOString(),
       due_date: new Date(formData.dueDate).toISOString(),
       subject: formData.subject,
@@ -163,11 +158,9 @@ export function useEditInvoiceForm(initialData?: TInvoiceDetail) {
   // Reset form
   const resetForm = () => {
     setFormData({
-      invoiceNumber: "",
       issueDate: "",
       dueDate: "",
       subject: "",
-      additionalNotes: "",
     });
     setSelectedCustomer(null);
     setInvoiceItems([]);
@@ -190,12 +183,13 @@ export function useEditInvoiceForm(initialData?: TInvoiceDetail) {
     handlePriceChange,
     handleRemoveItem,
 
-    // Utilities
     isFormValid,
     prepareInvoiceData,
     resetForm,
 
-    // Setters for direct access if needed
     setAddress,
+
+    dialog,
+    setDialog
   };
 }

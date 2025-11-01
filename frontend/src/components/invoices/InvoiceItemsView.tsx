@@ -1,3 +1,5 @@
+import { formatNumber } from "../../utils/formatNumber";
+
 type InvoiceItemsViewProps = {
   subtotal: number;
   total_items: number;
@@ -12,25 +14,25 @@ export default function InvoiceItemsView({
   amount,
 }: InvoiceItemsViewProps) {
   return (
-    <div className="text-gray-600">
-      <div className="flex justify-between">
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-between text-sm font-medium">
         <p>Item (s) </p>
         <p>{total_items} items</p>
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between text-sm font-medium">
         <p>Sub Total </p>
-        <p>{subtotal} </p>
+        <p>{formatNumber(subtotal)} </p>
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between text-sm font-medium">
         <p>Tax (10%)</p>
-        <p>{tax} </p>
+        <p>{formatNumber(tax)} </p>
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between text-sm font-medium">
         <p>Grand Total</p>
-        <p>{amount} </p>
+        <p className="font-bold text-[20px]">{formatNumber(amount)} </p>
       </div>
     </div>
   );

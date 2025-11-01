@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,7 +16,7 @@
   }
 
   body {
-    @apply min-h-screen bg-gray-50 text-gray-900;
+    @apply min-h-screen bg-gray-50 text-gray-900 text-[#424550];
   }
 }
 
@@ -42,4 +44,49 @@
   .label {
     @apply block text-sm font-medium text-gray-700 mb-1;
   }
+
+  /* Animation for toast notifications */
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
+
+@layer base {
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+/* Firefox remove focus ring */
+input::-moz-focus-inner {
+  border: 0;
+}
+
+input:-moz-focusring {
+  outline: none !important;
+}
 }

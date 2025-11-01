@@ -24,6 +24,9 @@ export default {
                     50: "#f4f7fd",
                     200: "#9a75e4",
                     500: "#0e123e"
+                },
+                'input' : {
+                    600 : '#EAEFF9'
                 }
             },
             fontFamily: {
