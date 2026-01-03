@@ -5,6 +5,9 @@ import (
 	"invoice-system/internal/applications/mapper"
 	"invoice-system/internal/applications/ports/repository"
 	"invoice-system/internal/applications/ports/services"
+	"invoice-system/internal/infra/logger"
+
+	"go.uber.org/zap"
 )
 
 type customerService struct {
@@ -21,6 +24,7 @@ func (c *customerService) Create(req dto.CreateCustomerRequest) error {
 
 	err := c.repo.CreateCustomer(&customer)
 	if err != nil {
+		logger.Error("error create customer", zap.Error(err))
 		return err
 	}
 
